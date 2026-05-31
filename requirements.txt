@@ -1,0 +1,31 @@
+# Core
+pandas>=2.1
+numpy>=1.26
+requests>=2.31
+pydantic>=2.5
+python-dotenv>=1.0
+click>=8.1
+
+# Scraping
+beautifulsoup4>=4.12
+playwright>=1.40
+lxml>=4.9
+
+# Streaming
+kafka-python>=2.0
+pyspark>=3.5
+delta-spark>=3.0
+
+# Storage
+google-cloud-bigquery>=3.13
+psycopg2-binary>=2.9
+sqlalchemy>=2.0
+
+# Backend API
+flask>=3.0
+flask-cors>=4.0
+
+# Dev
+pytest>=7.4
+pytest-cov>=4.1
+ruff>=0.1

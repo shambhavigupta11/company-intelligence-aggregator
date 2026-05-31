@@ -2,8 +2,8 @@
 
 from flask import Flask, jsonify, request
 
-from company_intel.scrapers.github_api import scrape_github_org
-from company_intel.scrapers.hackernews_api import scrape_hn_company_mentions
+from mosaic.scrapers.github_api import scrape_github_org
+from mosaic.scrapers.hackernews_api import scrape_hn_company_mentions
 
 
 def register_routes(app: Flask) -> None:

@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 
 import pandas as pd
 
-from company_intel.data_quality.checks import (
+from mosaic.data_quality.checks import (
     freshness,
     null_rate,
     row_count_anomaly,

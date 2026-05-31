@@ -1,4 +1,4 @@
-# Company Intelligence Aggregator
+# Mosaic
 
 > Real-time + batch data acquisition platform that ingests public signals about companies — engineering activity, hiring, mentions, funding — and serves them through an analytics API and React dashboard.
 
@@ -88,7 +88,7 @@ flowchart LR
 
 ```
 .
-├── src/company_intel/
+├── src/mosaic/
 │   ├── scrapers/          # API clients + Playwright scrapers
 │   ├── streaming/         # Kafka producers + Spark Streaming jobs
 │   ├── batch/             # Airflow DAGs for scheduled refreshes
@@ -120,8 +120,8 @@ flowchart LR
 
 ```bash
 # 1. Clone
-git clone https://github.com/shambhavigupta11/company-intelligence-aggregator.git
-cd company-intelligence-aggregator
+git clone https://github.com/shambhavigupta11/mosaic.git
+cd mosaic
 
 # 2. Python env
 python3.11 -m venv .venv
@@ -136,13 +136,13 @@ cp .env.example .env
 docker compose up -d
 
 # 5. Run a scraper end-to-end
-python -m company_intel.scrapers.github_api --org databricks
+python -m mosaic.scrapers.github_api --org databricks
 
 # 6. Start the Spark Streaming job (local mode)
-python -m company_intel.streaming.spark_streaming_job
+python -m mosaic.streaming.spark_streaming_job
 
 # 7. Start the Flask API
-python -m company_intel.api.app
+python -m mosaic.api.app
 
 # 8. Start the React dashboard
 cd frontend && npm install && npm run dev

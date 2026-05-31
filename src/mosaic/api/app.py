@@ -5,7 +5,7 @@ import os
 from flask import Flask
 from flask_cors import CORS
 
-from company_intel.api.routes import register_routes
+from mosaic.api.routes import register_routes
 
 
 def create_app() -> Flask:

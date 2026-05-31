@@ -26,7 +26,7 @@ GITHUB_EVENT_SCHEMA = StructType(
 
 def build_spark() -> SparkSession:
     return (
-        SparkSession.builder.appName("company-intel-streaming")
+        SparkSession.builder.appName("mosaic-streaming")
         .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0")
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
         .config(

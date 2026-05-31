@@ -3,14 +3,14 @@ version: "3.9"
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
-    container_name: company-intel-zookeeper
+    container_name: mosaic-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
     image: confluentinc/cp-kafka:7.5.0
-    container_name: company-intel-kafka
+    container_name: mosaic-kafka
     depends_on:
       - zookeeper
     ports:
@@ -25,13 +25,13 @@ services:
 
   postgres:
     image: postgres:16-alpine
-    container_name: company-intel-postgres
+    container_name: mosaic-postgres
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: company_intel
+      POSTGRES_DB: mosaic
     volumes:
       - pgdata:/var/lib/postgresql/data
 

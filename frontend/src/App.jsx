@@ -25,7 +25,7 @@ export default function App() {
   return (
     <div className="app">
       <header>
-        <h1>Company Intelligence</h1>
+        <h1>Mosaic</h1>
         <p className="subtitle">Real-time engineering, hiring, and mention signals for tracked companies.</p>
       </header>
 

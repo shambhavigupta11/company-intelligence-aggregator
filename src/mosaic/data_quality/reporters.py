@@ -3,8 +3,8 @@
 import json
 from dataclasses import asdict
 
-from company_intel.data_quality.checks import DQResult
-from company_intel.streaming.kafka_producer import publish_event
+from mosaic.data_quality.checks import DQResult
+from mosaic.streaming.kafka_producer import publish_event
 
 DQ_ALERTS_TOPIC = "dq.alerts"
 

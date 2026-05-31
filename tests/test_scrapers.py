@@ -2,11 +2,11 @@
 
 from unittest.mock import Mock, patch
 
-from company_intel.scrapers.github_api import scrape_github_org
-from company_intel.scrapers.hackernews_api import scrape_hn_company_mentions
+from mosaic.scrapers.github_api import scrape_github_org
+from mosaic.scrapers.hackernews_api import scrape_hn_company_mentions
 
 
-@patch("company_intel.scrapers.github_api.requests.get")
+@patch("mosaic.scrapers.github_api.requests.get")
 def test_scrape_github_org_parses_response(mock_get):
     mock_get.return_value = Mock(
         status_code=200,
@@ -32,7 +32,7 @@ def test_scrape_github_org_parses_response(mock_get):
     assert repos[0].language == "Scala"
 
 
-@patch("company_intel.scrapers.hackernews_api.requests.get")
+@patch("mosaic.scrapers.hackernews_api.requests.get")
 def test_scrape_hn_company_mentions_parses_response(mock_get):
     mock_get.return_value = Mock(
         status_code=200,

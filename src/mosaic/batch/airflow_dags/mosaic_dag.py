@@ -10,11 +10,11 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
-from company_intel.scrapers.github_api import scrape_github_org
-from company_intel.scrapers.hackernews_api import scrape_hn_company_mentions
+from mosaic.scrapers.github_api import scrape_github_org
+from mosaic.scrapers.hackernews_api import scrape_hn_company_mentions
 
 DEFAULT_ARGS = {
-    "owner": "company-intel",
+    "owner": "mosaic",
     "depends_on_past": False,
     "retries": 2,
     "retry_delay": timedelta(minutes=5),
@@ -38,13 +38,13 @@ def refresh_hn_mentions(**_: object) -> None:
 
 
 with DAG(
-    dag_id="company_intel_daily_refresh",
+    dag_id="mosaic_daily_refresh",
     default_args=DEFAULT_ARGS,
     description="Daily refresh of company intelligence signals.",
     schedule="0 2 * * *",
     start_date=datetime(2026, 5, 1),
     catchup=False,
-    tags=["company-intel", "batch"],
+    tags=["mosaic", "batch"],
 ) as dag:
     github_task = PythonOperator(
         task_id="refresh_github",

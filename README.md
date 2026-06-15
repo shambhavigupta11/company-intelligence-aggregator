@@ -135,11 +135,12 @@ cp .env.example .env
 # 4. Start local infra (Kafka, Zookeeper, Postgres)
 docker compose up -d
 
-# 5. Run a scraper end-to-end
-python -m mosaic.scrapers.github_api --org databricks
-
-# 6. Start the Spark Streaming job (local mode)
+# 5. Start the Spark Streaming job (local mode) — consumes all source topics
 python -m mosaic.streaming.spark_streaming_job
+
+# 6. Publish scraped events to Kafka for the streaming job to land in bronze
+mosaic publish --source github --target databricks
+mosaic publish --source hn --target databricks
 
 # 7. Start the Flask API
 python -m mosaic.api.app
@@ -169,7 +170,7 @@ DQ failures publish to a Kafka topic that the API consumes and surfaces as dashb
 ## Roadmap
 
 - [x] **Phase 1 — Scaffold:** repo structure, README, Docker Compose, sample scraper running locally
-- [ ] **Phase 2 — Pipeline:** end-to-end Spark Streaming job, BigQuery + Delta writes, DQ framework active
+- [x] **Phase 2 — Pipeline:** multi-source Spark Streaming job, BigQuery + Delta (bronze/silver/gold) writes, DQ framework active in the batch DAG
 - [ ] **Phase 3 — Serving:** Flask API + React dashboard live, GitHub Actions deploying, demo video recorded
 - [ ] **Phase 4 — Polish:** Airflow DAGs scheduled, alerting via Kafka, integration tests
 

@@ -111,6 +111,32 @@ def wiki(company: str, write_postgres: bool) -> None:
 
 
 @main.command()
+@click.option("--source", type=click.Choice(["github", "hn"]), required=True, help="Which source to publish.")
+@click.option("--target", required=True, help="GitHub org or company name to scrape.")
+@click.option("--limit", default=20, help="Max records to publish.")
+def publish(source: str, target: str, limit: int) -> None:
+    """Scrape a source and publish records to its Kafka topic for the streaming job.
+
+    Prerequisite: `docker compose up -d` (starts Kafka). The streaming job
+    (`python -m mosaic.streaming.spark_streaming_job`) consumes these topics
+    into Delta bronze.
+    """
+    from mosaic.streaming.kafka_producer import TOPICS, publish_events
+
+    topic = TOPICS[source]
+    if source == "github":
+        repos = scrape_github_org(org=target, limit=limit)
+        events = [r.model_dump(mode="json") for r in repos]
+        n = publish_events(topic, events, key_field="full_name")
+    else:  # hn
+        stories = scrape_hn_company_mentions(company=target, limit=limit)
+        events = [s.model_dump(mode="json") for s in stories]
+        n = publish_events(topic, events, key_field="title")
+
+    click.echo(f"Published {n} {source} records for '{target}' to topic '{topic}'.")
+
+
+@main.command()
 @click.option(
     "--companies",
     default="databricks,snowflake-labs,dbt-labs",

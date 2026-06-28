@@ -98,3 +98,142 @@ nav.orgs button.active {
 .error {
   color: #f87171;
 }
+.status,
+.empty {
+  color: var(--muted);
+}
+
+/* Tabs */
+nav.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+nav.tabs button {
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 15px;
+}
+nav.tabs button.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.section-title {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  margin: 0 0 12px 0;
+}
+
+/* Recharts panel */
+.chart-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+/* HackerNews list */
+.hn-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hn-card {
+  display: flex;
+  gap: 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.hn-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  border-right: 1px solid var(--border);
+  padding-right: 12px;
+}
+.hn-points {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.hn-points-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.hn-body h3 {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+}
+.hn-body a {
+  color: var(--text);
+  text-decoration: none;
+}
+.hn-body a:hover {
+  color: var(--accent);
+}
+.hn-meta {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Alerts table */
+.alerts-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.alerts-table th,
+.alerts-table td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.alerts-table th {
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+.alerts-table .mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+}
+.alerts-table .muted {
+  color: var(--muted);
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.badge-error {
+  background: rgba(248, 113, 113, 0.15);
+  color: #f87171;
+}
+.badge-warning {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+.badge-info {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--accent);
+}

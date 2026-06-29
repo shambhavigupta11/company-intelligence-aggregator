@@ -1,10 +1,15 @@
 """HTTP routes for the company intelligence API."""
 
+import logging
+
 from flask import Flask, jsonify, request
+from sqlalchemy.exc import SQLAlchemyError
 
 from mosaic.scrapers.github_api import scrape_github_org
 from mosaic.scrapers.hackernews_api import scrape_hn_company_mentions
 from mosaic.storage import postgres_writer
+
+logger = logging.getLogger(__name__)
 
 
 def register_routes(app: Flask) -> None:
@@ -28,8 +33,15 @@ def register_routes(app: Flask) -> None:
     def alerts() -> tuple:
         # DQ failures are mirrored from the dq.alerts Kafka topic into the
         # Postgres `dq_alerts` table; serve the most recent failures from there.
+        # This is the only endpoint that needs a database — when none is
+        # attached (e.g. the API-only free deploy), fail cleanly with a 503 so
+        # the dashboard can show a message instead of choking on a 500.
         limit = int(request.args.get("limit", 20))
-        df = postgres_writer.query_recent_dq_failures(limit=limit)
+        try:
+            df = postgres_writer.query_recent_dq_failures(limit=limit)
+        except SQLAlchemyError as exc:
+            logger.warning("alerts query failed (DB unavailable): %s", exc)
+            return jsonify({"error": "alerts unavailable: no database configured"}), 503
         # Stringify timestamps so jsonify can serialize the records.
         if "measured_at" in df.columns:
             df["measured_at"] = df["measured_at"].astype(str)

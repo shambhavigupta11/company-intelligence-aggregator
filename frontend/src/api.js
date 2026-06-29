@@ -7,7 +7,11 @@ const API_BASE = import.meta.env.VITE_API_BASE || ''
 /** Fetch JSON from an API path, throwing on non-2xx responses. */
 export async function fetchJson(path) {
   const res = await fetch(`${API_BASE}${path}`)
-  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  if (!res.ok) {
+    // Prefer the API's own {"error": "..."} message when present.
+    const body = await res.json().catch(() => null)
+    throw new Error(body?.error || `HTTP ${res.status}`)
+  }
   return res.json()
 }
 

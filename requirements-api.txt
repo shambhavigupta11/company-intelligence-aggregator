@@ -1,0 +1,13 @@
+# Minimal runtime deps for the Flask API container — deliberately excludes the
+# heavy data-engineering stack (pyspark, delta, playwright, kafka, bigquery) so
+# the deployed image stays small. Keep in sync with the API's imports.
+flask>=3.0
+flask-cors>=4.0
+gunicorn>=21.2
+requests>=2.31
+pydantic>=2.5
+python-dotenv>=1.0
+pandas>=2.1
+numpy>=1.26
+sqlalchemy>=2.0
+psycopg2-binary>=2.9

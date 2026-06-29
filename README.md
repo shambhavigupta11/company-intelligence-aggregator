@@ -167,11 +167,48 @@ DQ failures publish to a Kafka topic that the API consumes and surfaces as dashb
 
 ---
 
+## Deployment
+
+The dashboard and API deploy independently on free-tier infrastructure.
+
+### Dashboard → GitHub Pages
+
+Pushing to `main` triggers [`deploy.yml`](.github/workflows/deploy.yml), which
+builds the React app and publishes it to GitHub Pages.
+
+1. In the repo: **Settings → Pages → Source → GitHub Actions** (one-time).
+2. (Optional) Set a repo **variable** `VITE_API_BASE` to your deployed API URL
+   (e.g. `https://mosaic-api.onrender.com`) so the dashboard calls a live API.
+   Without it, the GitHub/HN tabs need a backend and degrade to an error state.
+
+### API → Render (Docker)
+
+The Flask API ships as a lean Docker image ([`Dockerfile`](Dockerfile)) — only
+the API runtime deps, not the full Spark/Kafka stack — served by gunicorn.
+
+- **One-click blueprint:** on [Render](https://render.com), **New + → Blueprint**
+  and connect this repo. [`render.yaml`](render.yaml) provisions a free web
+  service plus a free Postgres, wiring the DB env vars automatically.
+- **Manual / any Docker host:**
+  ```bash
+  docker build -t mosaic-api .
+  docker run -p 5050:5050 mosaic-api          # GitHub + HN tabs work with no DB
+  # add Postgres for the alerts tab:
+  docker run -p 5050:5050 \
+    -e POSTGRES_HOST=... -e POSTGRES_USER=... -e POSTGRES_PASSWORD=... \
+    -e POSTGRES_DB=mosaic mosaic-api
+  ```
+
+Only `/api/alerts` needs Postgres; `/api/companies/<org>/github` and `…/hn`
+scrape live, so the core demo runs on the API service alone.
+
+---
+
 ## Roadmap
 
 - [x] **Phase 1 — Scaffold:** repo structure, README, Docker Compose, sample scraper running locally
 - [x] **Phase 2 — Pipeline:** multi-source Spark Streaming job, BigQuery + Delta (bronze/silver/gold) writes, DQ framework active in the batch DAG
-- [ ] **Phase 3 — Serving:** Flask API + React dashboard live, GitHub Actions deploying, demo video recorded
+- [~] **Phase 3 — Serving:** Flask API (Docker/Render) + React dashboard (GitHub Pages) with GitHub Actions deploy — _done; demo video still TODO_
 - [ ] **Phase 4 — Polish:** Airflow DAGs scheduled, alerting via Kafka, integration tests
 
 ---

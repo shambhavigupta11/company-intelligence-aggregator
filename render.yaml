@@ -1,0 +1,50 @@
+# Render blueprint (https://render.com/docs/blueprint-spec).
+#
+# Deploys the Mosaic Flask API as a free Docker web service and provisions a
+# free Postgres for the alerts endpoint. To launch: on Render, "New +" ->
+# "Blueprint" -> connect this repo. Render reads this file and creates both.
+#
+# The GitHub and HackerNews endpoints scrape live and work with no database;
+# Postgres only backs the /api/alerts (data-quality) endpoint. The free
+# Postgres plan expires after a fixed window — recreate or upgrade if the
+# alerts tab stops loading.
+
+services:
+  - type: web
+    name: mosaic-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: POSTGRES_HOST
+        fromDatabase:
+          name: mosaic-db
+          property: host
+      - key: POSTGRES_PORT
+        fromDatabase:
+          name: mosaic-db
+          property: port
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: mosaic-db
+          property: user
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+          name: mosaic-db
+          property: password
+      - key: POSTGRES_DB
+        fromDatabase:
+          name: mosaic-db
+          property: database
+      # Optional: set a token in the Render dashboard to lift GitHub's
+      # unauthenticated rate limit (60 req/hr/IP).
+      - key: GITHUB_TOKEN
+        sync: false
+
+databases:
+  - name: mosaic-db
+    plan: free
+    databaseName: mosaic
+    user: mosaic
